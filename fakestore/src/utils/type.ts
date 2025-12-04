@@ -29,28 +29,35 @@ export interface UserState {
 export type UserAction = {
   type: "LOGIN",
   payload: User
+} | {
+  type: "CADASTRO",
+  payload: CadastroForm
 }
 export interface Token{
   token: string  
 }
-export const loginInitialState: LoginForm = {
+export interface LoginFormState {
+  username: string,
+  password: string
+}
+export const loginInitialState: LoginFormState = {
   username: '',
   password: ''
 } 
 export interface UserContextType {
   state: UserState,
-  login: () => LoginForm | null
+  login: (data: LoginForm) => void
   dispatch: React.Dispatch<UserAction>
+  
  
 }
+
 export interface LoginForm {
   username: string,
   password: string
 }
-//!Carrinho
-export interface Carrinho {
-  id: number,
-  userId: number,
-  products: []
+export interface CadastroForm {
+  username: string,
+  email: string,
+  password: string
 }
-

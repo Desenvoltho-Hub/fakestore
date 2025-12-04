@@ -1,61 +1,69 @@
-import { useRef } from "react";
+import { useContext } from "react";
 import { useModal } from "../hooks/useModal";
-
+import { useHandleChange } from "../hooks/useHandle";
+import { type LoginForm } from "../utils/type";
+import { UserContext } from "../contexts/UserContext";
 
 function LoginField() {
-const {modal, openModal, closeModal} = useModal()
-
-
-
+  const { modal, openModal, closeModal } = useModal();
+  const { errors, handleSubmit, register } = useHandleChange<LoginForm>();
+  const { login } = useContext(UserContext);
   return (
     <div>
       <button className="btn btn-primary" onClick={openModal}>
         Login
       </button>
       {modal && (
-        <dialog ref={modal} className="md:ml-120 md:mt-30">
+        <dialog
+          ref={modal}
+          className="md:ml-120 md:mt-30"
+          onSubmit={handleSubmit(login)}
+        >
           <form>
             <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4 ">
               <legend className="fieldset-legend">Login</legend>
 
               <label className="label">Nome</label>
               <input
-                type="email"
+                type="text"
                 className="input"
                 placeholder="Nome"
-               
+                {...register("username", {
+                  required: "O campo nome é obrigatório",
+                })}
               />
-
+              {errors.username && <h1>{errors.username.message}</h1>}
               <label className="label">Password</label>
               <input
                 type="password"
                 className="input"
                 placeholder="Password"
-               
+                {...register("password", {
+                  required: "O campo password é obrigatório",
+                })}
               />
-
-              <button className="btn btn-neutral mt-4">Login</button> 
-               <button
-            type="button"
-            className="btn btn-primary"
-            onClick={() => closeModal()}
-          >
-            Fechar
-          </button>  
-               </fieldset>
-          
-         
+              {errors.password && (
+                <h1>
+                  {errors.password.message}
+                </h1>
+              )}
+              <button className="btn btn-neutral mt-4" type="submit">
+                Login
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => closeModal()}
+              >
+                Fechar
+              </button>
+            </fieldset>
           </form>
-          
-          
-            <div>
-              <h1>
-           
-              </h1>
-            </div>
-       
+
+          <div>
+            <h1></h1>
+          </div>
         </dialog>
-        
       )}
     </div>
   );
