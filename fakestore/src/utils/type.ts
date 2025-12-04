@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from "react"
+
 
 export interface User {
   id: number,
@@ -30,12 +30,18 @@ export type UserAction = {
   type: "LOGIN",
   payload: User
 }
+export interface Token{
+  token: string  
+}
+export const loginInitialState: LoginForm = {
+  username: '',
+  password: ''
+} 
 export interface UserContextType {
   state: UserState,
-  login: () => void
+  login: () => LoginForm | null
   dispatch: React.Dispatch<UserAction>
-  user: null
-  setUser: Dispatch<SetStateAction<null>>
+ 
 }
 export interface LoginForm {
   username: string,
