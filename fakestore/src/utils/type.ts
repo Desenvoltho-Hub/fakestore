@@ -20,18 +20,25 @@ export const userInitialState: UserState = {
     firstname: '',
     lastname: ''
   } 
+  },
+  cadastro: {
+    email: '',
+    password: '',
+    username: ''
   }
 
 }
 export interface UserState {
   user: User
+  cadastro: CadastroForm
 }
 export type UserAction = {
   type: "LOGIN",
-  payload: User
+  user: User
 } | {
   type: "CADASTRO",
   payload: CadastroForm
+  localStorage: void
 }
 export interface Token{
   token: string  
@@ -61,3 +68,5 @@ export interface CadastroForm {
   email: string,
   password: string
 }
+
+

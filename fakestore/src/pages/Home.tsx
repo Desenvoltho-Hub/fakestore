@@ -1,8 +1,10 @@
 import Hero from "../components/Hero";
-import LoginField from "../components/LoginField";
+
+import { useGuardRoute } from "../hooks/useGuard";
 
 
 function Home() {
+   useGuardRoute()
     return ( 
         <div className="grid grid-cols-1 md:grid-cols-2 p-5">
             <Hero />
