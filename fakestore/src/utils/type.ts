@@ -1,5 +1,6 @@
 
 
+
 export interface User {
   id: number,
   email: string,
@@ -39,6 +40,9 @@ export type UserAction = {
   type: "CADASTRO",
   payload: CadastroForm
   localStorage: void
+} | {
+  type: "CADASTRO_FAKE",
+  cadastro: CadastroForm
 }
 export interface Token{
   token: string  
@@ -55,6 +59,8 @@ export interface UserContextType {
   state: UserState,
   login: (data: LoginForm) => void
   dispatch: React.Dispatch<UserAction>
+  cadastroFake: () => void
+
   
  
 }
@@ -67,6 +73,11 @@ export interface CadastroForm {
   username: string,
   email: string,
   password: string
+}
+export const cadastroInitialState = {
+  username: '',
+  email: '',
+  password: ''
 }
 
 

@@ -1,12 +1,14 @@
 import { useReducer, type PropsWithChildren } from "react";
 import {
   userInitialState,
+  type CadastroForm,
   type LoginForm,
   type UserAction,
   type UserState,
 } from "../utils/type";
 import { UserContext } from "./UserContext";
 import { api } from "../api/api";
+import { ajax } from "../utils/funcoesGenericas";
 
 export const UserProvider = ({ children }: PropsWithChildren) => {
   const reducer = (state: UserState, action: UserAction) => {
@@ -23,6 +25,12 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
             payload: action.payload,
             localStorage: action.localStorage
         }
+    }
+    case "CADASTRO_FAKE": {
+      return {
+        ...state,
+        cadastro: action.cadastro
+      }
     }
     }
 };
@@ -46,14 +54,26 @@ const login = async (data: LoginForm | null)  =>  {
             payload: response.data,
             localStorage: localStorage.setItem('userAuth', response.data.token)
         })
-    } catch(err) {
+        } catch(err) {
         alert('deu ruim!')
         console.log(err)
     }
 }
+//!<cadastroFake>
+const cadastroFake = async () => {
+ try { const response = await ajax<CadastroForm>('/user')
+  dispatch( {
+    type: 'CADASTRO_FAKE',
+    cadastro: response
+  })
+  localStorage.setItem('userAuth', response.username)
+ } catch(err){
+  console.log(err)
+ }
+}
 
   return (
-    <UserContext.Provider value={{ state, dispatch, login }}>
+    <UserContext.Provider value={{ state, dispatch, login, cadastroFake }}>
       {children}
     </UserContext.Provider>
   );

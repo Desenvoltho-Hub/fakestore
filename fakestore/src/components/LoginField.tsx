@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useModal } from "../hooks/useModal";
 import { useHandleChange } from "../hooks/useHandle";
 import { type LoginForm } from "../utils/type";
@@ -8,6 +8,9 @@ function LoginField() {
   const { modal, openModal, closeModal } = useModal();
   const { errors, handleSubmit, register } = useHandleChange<LoginForm>();
   const { login } = useContext(UserContext);
+  const [valiDation, setValidation] = useState('')
+  console.log(valiDation)
+  
   return (
     <div>
       <button className="btn btn-primary" onClick={openModal}>
@@ -28,10 +31,15 @@ function LoginField() {
                 type="text"
                 className="input"
                 placeholder="Nome"
-                {...register("username", {
-                  required: "O campo nome é obrigatório",
-                })}
+                
+                onChange={(e) => setValidation(e.target.value)}
+
               />
+              <div className={valiDation.length >= 20 ? 'text-red-500' : 'text-green-400'}>
+
+              {valiDation.length}/20
+              </div>
+          
               {errors.username && <h1>{errors.username.message}</h1>}
               <label className="label">Password</label>
               <input
@@ -47,7 +55,7 @@ function LoginField() {
                   {errors.password.message}
                 </h1>
               )}
-              <button className="btn btn-neutral mt-4" type="submit">
+              <button className="btn btn-neutral mt-4" type="submit" disabled={valiDation.length <= 6 ? true : false}>
                 Login
               </button>
               <button
